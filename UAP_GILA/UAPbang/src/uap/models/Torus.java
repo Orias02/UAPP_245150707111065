@@ -1,0 +1,42 @@
+package uap.models;
+
+import uap.bases.BaseCetakan;
+import uap.interfaces.*;
+
+public class Torus extends BaseCetakan implements VolumeCalculator, SurfaceAreaCalculator, MassCalculator, DeliveryCostCalculator {
+    private static final double PI = 22.0 / 7.0;
+    private static final double TEBAL = 0.5;
+    private double jariJariLuar;
+    private double jariJariDalam;
+
+    public Torus(double jariJariLuar, double jariJariDalam) {
+        this.jariJariLuar = jariJariLuar;
+        this.jariJariDalam = jariJariDalam;
+    }
+
+    @Override
+    public void hitungVolume() {
+        volume = 2 * PI * jariJariDalam * (PI * Math.pow(jariJariLuar, 2));
+    }
+
+    @Override
+    public void hitungLuasPermukaan() {
+        luasPermukaan = 4 * Math.pow(PI, 2) * jariJariLuar * jariJariDalam;
+    }
+
+    @Override
+    public void hitungMassa() {
+        massa = luasPermukaan * TEBAL * 8; // densitas stainless 304 ~ 8 g/cm³
+    }
+
+    @Override
+    public int hitungBiayaKirim() {
+        double kg = massa / 1000;
+        int kgBulat = (int) Math.ceil(kg);
+        return kgBulat * 10000; // Rp10.000 per kg
+    }
+
+    public double getMassaKg() {
+        return massa / 1000;
+    }
+}
